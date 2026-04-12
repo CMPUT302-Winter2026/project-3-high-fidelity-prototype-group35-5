@@ -8,4 +8,4 @@
 - Sean Meyers (`smmeyers`)
 
 ## Acknowledgements
-- Assisted by Claude AI (In development of the prototype)
+- Assisted by Gemini and Claude AI (In development of the prototype)
