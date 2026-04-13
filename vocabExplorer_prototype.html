@@ -3086,9 +3086,14 @@
                         <div class="sheet-handle"></div>
                         <div class="wd-header">
                             <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                                <div>
-                                    <div class="wd-title" id="wd-cree">mihcêt</div>
-                                    <div class="wd-sro" id="wd-sro">SRO: mih-CHÂYT</div>
+                                <div style="display:flex;align-items:flex-start;gap:6px">
+                                    <span id="wd-back-btn" style="font-size:20px;cursor:pointer;padding:4px;display:none"
+                                        onclick="wordDetailBack()" role="button" aria-label="Go back to previous word"
+                                        tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')wordDetailBack()">‹</span>
+                                    <div>
+                                        <div class="wd-title" id="wd-cree">mihcêt</div>
+                                        <div class="wd-sro" id="wd-sro">SRO: mih-CHÂYT</div>
+                                    </div>
                                 </div>
                                 <!-- M3 FIX: removed duplicate star icon — only one save button at bottom -->
                                 <span style="font-size:18px;cursor:pointer;padding:4px"
@@ -3771,7 +3776,8 @@
             expandedWords: new Set(),
             currentTopic: 'body',
             currentWordId: null,
-            nodeSelected: null
+            nodeSelected: null,
+            wordDetailHistory: []
         };
 
         /* ═══ NAVIGATION ══════════════════════════════════════════════════════ */
@@ -4264,8 +4270,7 @@
             mihtat: { cree: 'mihtât', sro: 'mih-TÂT', pron: 'mih – TÂT', guide: 'Long â vowel', eng: '<strong>foot</strong>', cls: 'Noun Inanimate (NI)', topic: 'Body Parts', exCree: 'mihtât ôma', exEng: 'This is a foot.', chips: '<span class="chip chip-blue">5 related</span><span class="chip chip-white">NI</span>' },
         };
 
-        function openWordDetail(id) {
-            // Fallback: look up from topics if not in wordData
+        function _renderWordDetailContent(id) {
             let d = wordData[id];
             if (!d) {
                 for (const td of Object.values(topics)) {
@@ -4277,7 +4282,6 @@
                 }
             }
             if (!d) d = { cree: id, sro: id, pron: id, guide: '', eng: '(definition not loaded)', cls: '—', topic: '—', exCree: '', exEng: '', chips: '' };
-            state.currentWordId = id;
             document.getElementById('wd-cree').textContent = d.cree;
             document.getElementById('wd-sro').textContent = 'SRO: ' + d.sro;
             document.getElementById('wd-pron').textContent = d.pron;
@@ -4288,22 +4292,41 @@
             document.getElementById('wd-ex-cree').textContent = d.exCree;
             document.getElementById('wd-ex-eng').textContent = d.exEng;
             document.getElementById('wd-chips').innerHTML = d.chips;
-            // Update save button to reflect current saved state
             const btn = document.getElementById('save-btn');
             if (btn) {
                 const saved = state.savedWords.has(id);
                 btn.textContent = saved ? '★ Saved' : '⭐ Save';
                 btn.style.background = saved ? '#e8f4ec' : '';
             }
-            go('s-word-detail');
+            state.currentWordId = id;
+            const backBtn = document.getElementById('wd-back-btn');
+            if (backBtn) backBtn.style.display = state.wordDetailHistory.length > 0 ? 'inline' : 'none';
+        }
+
+        function openWordDetail(id) {
+            const el = document.getElementById('s-word-detail');
+            const alreadyOpen = el.classList.contains('active');
+            if (alreadyOpen) {
+                // Navigating to a related word — push current word onto history
+                state.wordDetailHistory.push(state.currentWordId);
+            } else {
+                // Opening fresh — clear history and show overlay on top of current screen
+                state.wordDetailHistory = [];
+                el.classList.add('active');
+            }
+            _renderWordDetailContent(id);
+        }
+
+        function wordDetailBack() {
+            if (state.wordDetailHistory.length === 0) return;
+            const prevId = state.wordDetailHistory.pop();
+            _renderWordDetailContent(prevId);
         }
 
         function closeWordDetail() {
             const el = document.getElementById('s-word-detail');
             el.classList.remove('active');
-            el.style.transform = 'translateY(100%)';
-            setTimeout(() => { el.style.transform = ''; }, 280);
-            if (state.stack[state.stack.length - 1] === 's-word-detail') state.stack.pop();
+            state.wordDetailHistory = [];
         }
 
         function saveWord() {
