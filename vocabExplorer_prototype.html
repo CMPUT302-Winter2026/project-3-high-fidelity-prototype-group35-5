@@ -2909,7 +2909,7 @@
                     <div class="search-active-bar">
                         <span style="font-size:15px;color:var(--accent)">🔍</span>
                         <input class="search-input" id="search-input" placeholder="Type a Cree or English word…"
-                            value="pimohtê" onkeyup="filterSearch(this.value)">
+                            onkeyup="filterSearch(this.value)">
                         <span style="font-size:14px;color:var(--light);cursor:pointer" onclick="clearSearch()">✕</span>
                     </div>
                     <div class="filter-scroll">
@@ -2921,13 +2921,13 @@
                         <span class="f-chip off" onclick="setSearchFilter(this,'movement')">Movement</span>
                     </div>
                     <!-- M3 FIX: Visible multi-select button replaces hidden long-press -->
-                    <div class="multi-select-bar">
+                    <div class="multi-select-bar" id="search-select-bar" style="display:none">
                         <button class="select-btn" id="select-btn" onclick="toggleSelect()">
                             <span id="select-icon">☐</span>
                             <span id="select-label">Select Multiple Words</span>
                         </button>
                     </div>
-                    <div class="map-preview-card" onclick="loadTopic('movement');go('s-semantic-list')">
+                    <div class="map-preview-card" id="search-map-card" style="display:none" onclick="loadTopic('movement');go('s-semantic-list')">
                         <span style="font-size:22px">📋</span>
                         <div style="flex:1">
                             <div style="font-size:11px;font-weight:700;color:var(--primary)">View as Word List</div>
@@ -2936,92 +2936,22 @@
                         </div>
                         <button class="mp-open">Open →</button>
                     </div>
-                    <div class="section-hdr"
-                        style="display:flex;justify-content:space-between;align-items:center;padding-right:14px">
+                    <div class="section-hdr" id="search-results-hdr"
+                        style="display:none;justify-content:space-between;align-items:center;padding-right:14px">
                         Top Results
                         <button class="export-list-btn" id="search-export-btn"
                             onclick="activateSelectAndShowExportHint()" style="font-size:10px;padding:5px 9px">📤 Export
                             List</button>
                     </div>
-                    <div id="search-results">
-                        <div class="result-item" data-type="verb" data-animate="true" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew')">
-                            <div id="cb-pimohtew" class="result-cb" style="display:none"></div>
-                            <div class="result-main">
-                                <div class="result-cree"><span class="result-highlight">pimohtê</span>w</div>
-                                <div class="result-eng">s/he walks, s/he goes along</div>
-                                <div class="result-chips">
-                                    <span class="chip chip-blue">Verb (VAI)</span>
-                                    <span class="chip chip-green">Animate</span>
-                                    <span class="chip chip-gray">Movement</span>
-                                </div>
-                            </div>
-                            <span class="result-arrow">›</span>
-                        </div>
-                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-epimohtew')">
-                            <div id="cb-epimohtew" class="result-cb" style="display:none"></div>
-                            <div class="result-main">
-                                <div class="result-cree">ê-<span class="result-highlight">pimohtê</span>t</div>
-                                <div class="result-eng">while s/he is walking</div>
-                                <div class="result-chips">
-                                    <span class="chip chip-blue">Verb (VAI-conj)</span>
-                                    <span class="chip chip-gray">Movement</span>
-                                </div>
-                            </div>
-                            <span class="result-arrow">›</span>
-                        </div>
-                        <div class="result-item" data-type="noun" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew2')">
-                            <div id="cb-pimohtew2" class="result-cb" style="display:none"></div>
-                            <div class="result-main">
-                                <div class="result-cree"><span class="result-highlight">pimohtê</span>win</div>
-                                <div class="result-eng">a walk, the act of walking</div>
-                                <div class="result-chips">
-                                    <span class="chip chip-blue">Noun (NI)</span>
-                                    <span class="chip chip-gray">Movement</span>
-                                </div>
-                            </div>
-                            <span class="result-arrow">›</span>
-                        </div>
-                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-papamohtew')">
-                            <div id="cb-papamohtew" class="result-cb" style="display:none"></div>
-                            <div class="result-main">
-                                <div class="result-cree">papâmo<span class="result-highlight">htê</span>w</div>
-                                <div class="result-eng">s/he walks around</div>
-                                <div class="result-chips">
-                                    <span class="chip chip-blue">Verb (VAI)</span>
-                                    <span class="chip chip-gray">Movement</span>
-                                </div>
-                            </div>
-                            <span class="result-arrow">›</span>
-                        </div>
-                        <div id="search-results-overflow" style="display:none">
-                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-kiwepimohtew')">
-                            <div id="cb-kiwepimohtew" class="result-cb" style="display:none"></div>
-                            <div class="result-main">
-                                <div class="result-cree">kîwê<span class="result-highlight">pimohtê</span>w</div>
-                                <div class="result-eng">s/he walks home</div>
-                                <div class="result-chips">
-                                    <span class="chip chip-blue">Verb (VAI)</span>
-                                    <span class="chip chip-gray">Movement</span>
-                                </div>
-                            </div>
-                            <span class="result-arrow">›</span>
-                        </div>
-                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-mostosiw')">
-                            <div id="cb-mostosiw" class="result-cb" style="display:none"></div>
-                            <div class="result-main">
-                                <div class="result-cree">mostosiw</div>
-                                <div class="result-eng">s/he runs</div>
-                                <div class="result-chips">
-                                    <span class="chip chip-blue">Verb (VAI)</span>
-                                    <span class="chip chip-gray">Movement</span>
-                                </div>
-                            </div>
-                            <span class="result-arrow">›</span>
-                        </div>
-                        </div>
+                    <div id="search-hint"
+                        style="text-align:center;padding:40px 20px;color:var(--light);font-size:13px;line-height:1.7">
+                        🔍<br>Search in <strong>English</strong> or <strong>Cree</strong><br>
+                        <span style="font-size:11px">e.g. "walk" or "pimohtêw"</span>
+                    </div>
+                    <div id="search-results" style="display:none">
                     </div>
                     <div id="show-all-btn"
-                        style="text-align:center;padding:10px;font-size:11px;color:var(--accent);font-weight:600;cursor:pointer"
+                        style="display:none;text-align:center;padding:10px;font-size:11px;color:var(--accent);font-weight:600;cursor:pointer"
                         onclick="showAllSearchResults()">
                         Show all 12 results →</div>
                     <div style="height:80px"></div>
@@ -3503,7 +3433,7 @@
                 <div class="top-nav expert">
                     <span class="back-btn" onclick="back()">←</span>
                     <span class="nav-title" style="font-style:italic">nipahêw</span>
-                    <div class="nav-actions"><span title="Copy morphological data" onclick="copyMorphData()" style="cursor:pointer">📋</span><span onclick="go('s-export')">📤</span></div>
+                    <div class="nav-actions"><span title="Copy morphological data" onclick="copyMorphData()" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;gap:1px"><span>📋</span><span style="font-size:7px;opacity:.75">Copy</span></span><span onclick="go('s-export')">📤</span></div>
                 </div>
                 <div
                     style="padding:10px 14px 8px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0">
@@ -4045,6 +3975,17 @@
         function onScreenEnter(id) {
             if (id === 's-saved') renderSavedWords();
             if (id === 's-expert-map') setTimeout(() => showExpertMapHintIfNeeded(), 350);
+            if (id === 's-search') {
+                // Restore persisted search query, or show empty state
+                const inp = document.getElementById('search-input');
+                const saved = state._searchQuery || '';
+                inp.value = saved;
+                if (saved) {
+                    filterSearch(saved);
+                } else {
+                    _showSearchEmptyState();
+                }
+            }
             // Update top-nav color to match current persona for shared screens
             const personaClass = state.persona === 'teacher' ? ' teacher' : state.persona === 'expert' ? ' expert' : '';
             const adaptiveScreens = ['s-categories', 's-semantic-list', 's-saved', 's-settings', 's-search'];
@@ -4670,23 +4611,44 @@
         }
 
         /* ═══ SEARCH ══════════════════════════════════════════════════════════ */
+        function _showSearchEmptyState() {
+            document.getElementById('search-hint').style.display = '';
+            document.getElementById('search-results').style.display = 'none';
+            document.getElementById('search-results-hdr').style.display = 'none';
+            document.getElementById('search-select-bar').style.display = 'none';
+            document.getElementById('search-map-card').style.display = 'none';
+            const showAllBtn = document.getElementById('show-all-btn');
+            if (showAllBtn) showAllBtn.style.display = 'none';
+        }
+
+        function _showSearchResultsUI() {
+            document.getElementById('search-hint').style.display = 'none';
+            document.getElementById('search-results').style.display = '';
+            document.getElementById('search-results-hdr').style.display = 'flex';
+            document.getElementById('search-select-bar').style.display = '';
+            document.getElementById('search-map-card').style.display = '';
+        }
+
         function clearSearch() {
             const inp = document.getElementById('search-input');
             inp.value = '';
-            filterSearch('');
+            state._searchQuery = '';
+            state._hiddenSearchResults = [];
+            _showSearchEmptyState();
         }
 
         function filterSearch(val) {
             const container = document.getElementById('search-results');
             const query = val.trim().toLowerCase();
-            // Reset overflow/show-all for dynamic searches
-            const overflow = document.getElementById('search-results-overflow');
-            if (overflow) overflow.style.display = 'none';
-            const showAllBtn = document.getElementById('show-all-btn');
+            state._searchQuery = val;
+
             if (!query) {
-                renderDefaultSearchResults();
+                _showSearchEmptyState();
                 return;
             }
+
+            _showSearchResultsUI();
+
             // Collect all words from wordData + topics
             const seen = new Set();
             const matches = [];
@@ -4709,13 +4671,16 @@
                     if (w.children) w.children.forEach(c => addWord(c.id, c.cree, c.eng, null, td.title, 'word'));
                 }
             }
+
+            const showAllBtn = document.getElementById('show-all-btn');
+
             if (matches.length === 0) {
                 container.innerHTML = `<div style="text-align:center;padding:24px 14px;color:var(--light);font-size:12px">No results for "${val}"</div>`;
                 if (showAllBtn) showAllBtn.style.display = 'none';
                 return;
             }
             const visible = matches.slice(0, 4);
-            const hidden = matches.slice(4, 12);
+            const hidden = matches.slice(4);
             container.innerHTML = visible.map(m => {
                 const hi = m.cree.replace(new RegExp(val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), s => `<span class="result-highlight">${s}</span>`);
                 return `<div class="result-item" data-type="${m.type}" data-category="${(m.topic || '').toLowerCase()}" onclick="openWordDetail('${m.id}')">
@@ -4730,9 +4695,7 @@
     </div>`;
             }).join('');
             if (hidden.length > 0) {
-                // Store hidden results for show-all
                 state._hiddenSearchResults = hidden;
-                state._searchQuery = val;
                 if (showAllBtn) {
                     showAllBtn.style.display = '';
                     showAllBtn.textContent = `Show all ${matches.length} results →`;
@@ -4745,45 +4708,7 @@
         }
 
         function renderDefaultSearchResults() {
-            document.getElementById('search-results').innerHTML = `
-    <div class="result-item" data-type="verb" data-animate="true" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew')">
-      <div id="cb-pimohtew" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
-      <div class="result-main">
-        <div class="result-cree"><span class="result-highlight">pimohtê</span>w</div>
-        <div class="result-eng">s/he walks, s/he goes along</div>
-        <div class="result-chips"><span class="chip chip-blue">Verb (VAI)</span><span class="chip chip-green">Animate</span><span class="chip chip-gray">Movement</span></div>
-      </div><span class="result-arrow">›</span>
-    </div>
-    <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-epimohtew')">
-      <div id="cb-epimohtew" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
-      <div class="result-main">
-        <div class="result-cree">ê-<span class="result-highlight">pimohtê</span>t</div>
-        <div class="result-eng">while s/he is walking</div>
-        <div class="result-chips"><span class="chip chip-blue">Verb (VAI-conj)</span><span class="chip chip-gray">Movement</span></div>
-      </div><span class="result-arrow">›</span>
-    </div>
-    <div class="result-item" data-type="noun" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew2')">
-      <div id="cb-pimohtew2" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
-      <div class="result-main">
-        <div class="result-cree"><span class="result-highlight">pimohtê</span>win</div>
-        <div class="result-eng">a walk, the act of walking</div>
-        <div class="result-chips"><span class="chip chip-blue">Noun (NI)</span><span class="chip chip-gray">Movement</span></div>
-      </div><span class="result-arrow">›</span>
-    </div>
-    <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-papamohtew')">
-      <div id="cb-papamohtew" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
-      <div class="result-main">
-        <div class="result-cree">papâmo<span class="result-highlight">htê</span>w</div>
-        <div class="result-eng">s/he walks around</div>
-        <div class="result-chips"><span class="chip chip-blue">Verb (VAI)</span><span class="chip chip-gray">Movement</span></div>
-      </div><span class="result-arrow">›</span>
-    </div>`;
-            // Reset overflow section
-            const overflow = document.getElementById('search-results-overflow');
-            if (overflow) overflow.style.display = 'none';
-            const showAllBtn = document.getElementById('show-all-btn');
-            if (showAllBtn) showAllBtn.style.display = '';
-            applySearchFilter();
+            // No-op: empty search state is now handled by _showSearchEmptyState
         }
 
         function toggleSelect() {
@@ -5224,16 +5149,8 @@
 
         /* ═══ SHOW ALL SEARCH RESULTS ════════════════════════════════════════ */
         function showAllSearchResults() {
-            const overflow = document.getElementById('search-results-overflow');
-            const btn = document.getElementById('show-all-btn');
-            if (overflow) overflow.style.display = '';
-            if (btn) btn.style.display = 'none';
-            // Reapply filter to newly visible items
-            applySearchFilter();
-            // Show checkboxes on new items if in select mode
-            if (state.selectMode) {
-                document.querySelectorAll('.result-cb').forEach(cb => cb.style.display = 'flex');
-            }
+            // Alias for static default results — delegates to dynamic handler
+            showAllDynamicSearchResults();
         }
 
         function showAllDynamicSearchResults() {
