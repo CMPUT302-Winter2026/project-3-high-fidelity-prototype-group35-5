@@ -3433,7 +3433,7 @@
                 <div class="top-nav expert">
                     <span class="back-btn" onclick="back()">←</span>
                     <span class="nav-title" style="font-style:italic">nipahêw</span>
-                    <div class="nav-actions"><span title="Copy morphological data" onclick="copyMorphData()" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;gap:1px"><span>📋</span><span style="font-size:7px;opacity:.75">Copy</span></span><span onclick="go('s-export')">📤</span></div>
+                    <div class="nav-actions"><span title="Copy morphological data" onclick="copyMorphData()" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;gap:1px"><span>📋</span><span style="font-size:7px;opacity:.75">Copy</span></span><span onclick="go('s-export')" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;gap:1px"><span>📤</span><span style="font-size:7px;opacity:.75">Export</span></span></div>
                 </div>
                 <div
                     style="padding:10px 14px 8px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0">
@@ -4637,6 +4637,47 @@
             _showSearchEmptyState();
         }
 
+        function _isAnimate(cls) {
+            // Returns true if the class string contains standalone "animate" (not "inanimate")
+            return cls ? cls.toLowerCase().split(/[\s·()/·]+/).includes('animate') : false;
+        }
+
+        function _buildResultChips(m) {
+            const chips = [];
+            if (m.cls && m.cls !== '—') {
+                // Extract abbreviation inside parens, e.g. "(VAI)" → "VAI", "(Inanimate · NI)" → "Inanimate · NI"
+                const abbrMatch = m.cls.match(/\(([^)]+)\)/);
+                if (abbrMatch) {
+                    // Use the last token as the short form if there's a ·, otherwise use full content
+                    const inner = abbrMatch[1];
+                    const short = inner.includes('·') ? inner.split('·').pop().trim() : inner.trim();
+                    const prefix = m.type === 'noun' ? 'Noun' : m.type === 'verb' ? 'Verb' : null;
+                    chips.push(`<span class="chip chip-blue">${prefix ? prefix + ' (' + short + ')' : short}</span>`);
+                }
+            }
+            if (_isAnimate(m.cls)) {
+                chips.push(`<span class="chip chip-green">Animate</span>`);
+            }
+            chips.push(`<span class="chip chip-gray">${m.topic}</span>`);
+            return chips.join('');
+        }
+
+        function _buildResultItem(m, val) {
+            const hi = m.cree.replace(new RegExp(val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), s => `<span class="result-highlight">${s}</span>`);
+            const cbId = `cb-dyn-${m.id}`;
+            const cbDisplay = state.selectMode ? 'flex' : 'none';
+            const animate = _isAnimate(m.cls) ? 'true' : 'false';
+            return `<div class="result-item" data-type="${m.type}" data-category="${(m.topic || '').toLowerCase()}" data-animate="${animate}" onclick="handleResultTap(this,'${cbId}')">
+      <div id="${cbId}" class="result-cb" style="display:${cbDisplay}"></div>
+      <div class="result-main">
+        <div class="result-cree">${hi}</div>
+        <div class="result-eng">${m.eng.replace(/<[^>]*>/g, '')}</div>
+        <div class="result-chips">${_buildResultChips(m)}</div>
+      </div>
+      <span class="result-arrow">›</span>
+    </div>`;
+        }
+
         function filterSearch(val) {
             const container = document.getElementById('search-results');
             const query = val.trim().toLowerCase();
@@ -4681,19 +4722,7 @@
             }
             const visible = matches.slice(0, 4);
             const hidden = matches.slice(4);
-            container.innerHTML = visible.map(m => {
-                const hi = m.cree.replace(new RegExp(val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), s => `<span class="result-highlight">${s}</span>`);
-                return `<div class="result-item" data-type="${m.type}" data-category="${(m.topic || '').toLowerCase()}" onclick="openWordDetail('${m.id}')">
-      <div class="result-main">
-        <div class="result-cree">${hi}</div>
-        <div class="result-eng">${m.eng.replace(/<[^>]*>/g, '')}</div>
-        <div class="result-chips">
-          <span class="chip chip-gray">${m.topic}</span>
-        </div>
-      </div>
-      <span class="result-arrow">›</span>
-    </div>`;
-            }).join('');
+            container.innerHTML = visible.map(m => _buildResultItem(m, val)).join('');
             if (hidden.length > 0) {
                 state._hiddenSearchResults = hidden;
                 if (showAllBtn) {
@@ -4752,7 +4781,8 @@
                 }
             } else {
                 // Map checkbox ID back to a word ID and open detail
-                const wordId = cbId.replace('cb-', '').replace(/\d+$/, '');
+                // Supports both "cb-pimohtew" (static) and "cb-dyn-pimohtew" (dynamic)
+                let wordId = cbId.replace(/^cb-dyn-/, '').replace(/^cb-/, '').replace(/\d+$/, '');
                 openWordDetail(wordId in wordData ? wordId : 'pimohtew');
             }
         }
@@ -5159,20 +5189,11 @@
             const val = state._searchQuery || '';
             if (hidden.length === 0) return;
             hidden.forEach(m => {
-                const hi = m.cree.replace(new RegExp(val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), s => `<span class="result-highlight">${s}</span>`);
                 const div = document.createElement('div');
-                div.className = 'result-item';
-                div.dataset.type = m.type;
-                div.dataset.category = (m.topic || '').toLowerCase();
-                div.innerHTML = `
-      <div class="result-main">
-        <div class="result-cree">${hi}</div>
-        <div class="result-eng">${m.eng.replace(/<[^>]*>/g, '')}</div>
-        <div class="result-chips"><span class="chip chip-gray">${m.topic}</span></div>
-      </div>
-      <span class="result-arrow">›</span>`;
-                div.onclick = () => openWordDetail(m.id);
-                container.appendChild(div);
+                div.outerHTML; // placeholder — we use innerHTML approach
+                const wrapper = document.createElement('template');
+                wrapper.innerHTML = _buildResultItem(m, val);
+                container.appendChild(wrapper.content.firstElementChild);
             });
             state._hiddenSearchResults = [];
             const btn = document.getElementById('show-all-btn');
