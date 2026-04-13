@@ -2395,6 +2395,24 @@
             line-height: 1.5;
         }
 
+        /* ═══ HINT NEVER-SHOW ROW ═══════════════════════════════════════════════ */
+        .hint-never-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--mid);
+            margin: 12px 0 0;
+            cursor: pointer;
+        }
+
+        .hint-never-row input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
         /* ═══ MISC ══════════════════════════════════════════════════════════════ */
         .text-center {
             text-align: center;
@@ -2663,11 +2681,11 @@
                     </div>
                     <div class="recent-row" style="padding-bottom:6px">
                         <div style="display:inline-flex;align-items:center;gap:6px;background:var(--soft);border:1.5px solid #b0c8e4;border-radius:14px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--primary);cursor:pointer"
-                            onclick="loadTopic('body');go('s-classroom')">🤚 Body Parts 🗺</div>
+                            onclick="loadTopic('body');showWordMapHelp()">🤚 Body Parts 🗺</div>
                         <div style="display:inline-flex;align-items:center;gap:6px;background:var(--soft);border:1.5px solid #b0c8e4;border-radius:14px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--primary);cursor:pointer"
-                            onclick="loadTopic('movement');go('s-classroom')">🏃 Movement 🗺</div>
+                            onclick="loadTopic('movement');showWordMapHelp()">🏃 Movement 🗺</div>
                         <div style="display:inline-flex;align-items:center;gap:6px;background:var(--soft);border:1.5px solid #b0c8e4;border-radius:14px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--primary);cursor:pointer"
-                            onclick="loadTopic('weather');go('s-classroom')">☁️ Weather 🗺</div>
+                            onclick="loadTopic('weather');showWordMapHelp()">☁️ Weather 🗺</div>
                     </div>
                     <div class="more-cats-btn" onclick="go('s-categories')">
                         <span style="font-size:16px">📂</span> More Categories…
@@ -3662,6 +3680,18 @@
 
                     <div
                         style="background:#f8f6f0;padding:8px 14px 3px;font-size:11px;font-weight:700;color:var(--mid);letter-spacing:.7px;text-transform:uppercase">
+                        Hints</div>
+                    <div class="settings-row" onclick="resetHints()">
+                        <div class="s-icon">💡</div>
+                        <div class="s-text">
+                            <div class="s-label">Reset All Hints</div>
+                            <div class="s-desc">Show hint modals again when visiting screens.</div>
+                        </div>
+                        <span style="font-size:16px;color:#ccc">›</span>
+                    </div>
+
+                    <div
+                        style="background:#f8f6f0;padding:8px 14px 3px;font-size:11px;font-weight:700;color:var(--mid);letter-spacing:.7px;text-transform:uppercase">
                         About</div>
                     <div class="settings-row">
                         <div class="s-icon">ℹ️</div>
@@ -3696,7 +3726,23 @@
                 <div class="help-modal-body">The Semantic Word Map displays vocabulary as an interactive visual network.
                     Tap any word node to reveal its English translation — perfect for classroom display or guided
                     discussion.</div>
+                <label class="hint-never-row">
+                    <input type="checkbox" id="word-map-never-show"> Don't show this again
+                </label>
                 <button class="help-modal-ok" onclick="openWordMap()">Open Map →</button>
+            </div>
+        </div>
+
+        <!-- EXPERT MAP HINT MODAL -->
+        <div class="help-modal-backdrop" id="expert-map-help" style="display:none" onclick="closeExpertMapHelp()">
+            <div class="help-modal" onclick="event.stopPropagation()">
+                <div class="help-modal-icon">🔬</div>
+                <div class="help-modal-title">Gap Annotation Map</div>
+                <div class="help-modal-body">This map explores the <strong>semantic relationships</strong> between Cree words and highlights automatically detected <strong>lexical gaps</strong> — concepts that likely exist in the language but are not yet documented.<br><br>Tap any gap node to annotate it with your own research notes. Your annotations will be visible to your research team.</div>
+                <label class="hint-never-row">
+                    <input type="checkbox" id="expert-map-never-show"> Don't show this again
+                </label>
+                <button class="help-modal-ok" style="background:var(--expert)" onclick="closeExpertMapHelp()">Got it →</button>
             </div>
         </div>
 
@@ -3743,6 +3789,10 @@
 
             state.stack.push(id);
             updateWizardHighlight(id);
+            if (id === 's-expert-map') {
+                // Wait for slide-in animation (~280ms) before showing the hint overlay
+                setTimeout(() => showExpertMapHintIfNeeded(), 350);
+            }
         }
 
         function back() {
@@ -3766,6 +3816,10 @@
             const el = document.getElementById(id);
             if (el) { el.classList.add('active'); state.stack = [id]; }
             updateWizardHighlight(id);
+            if (id === 's-expert-map') {
+                // wiz() does an instant jump (no animation), so a short delay is enough
+                setTimeout(() => showExpertMapHintIfNeeded(), 150);
+            }
         }
 
         function backToHome() {
@@ -4548,14 +4602,47 @@
             showToast('📋 Select words, then tap Export');
         }
 
+        /* ═══ HINTS ══════════════════════════════════════════════════════════════ */
+        const hintKeys = { expertMap: 'hint_expertMap_dismissed', wordMap: 'hint_wordMap_dismissed' };
+
+        function isHintDismissed(key) {
+            // localStorage may be unavailable in private browsing — treat as not dismissed
+            try { return localStorage.getItem(hintKeys[key]) === '1'; } catch (e) { return false; }
+        }
+        function setHintDismissed(key) {
+            // localStorage may be unavailable in private browsing — failure is non-critical
+            try { localStorage.setItem(hintKeys[key], '1'); } catch (e) { }
+        }
+        function resetHints() {
+            try { Object.values(hintKeys).forEach(k => localStorage.removeItem(k)); } catch (e) { }
+            showToast('💡 Hints reset — they will appear again');
+        }
+
+        function showExpertMapHintIfNeeded() {
+            if (!isHintDismissed('expertMap')) {
+                document.getElementById('expert-map-help').style.display = 'flex';
+            }
+        }
+        function closeExpertMapHelp() {
+            const cb = document.getElementById('expert-map-never-show');
+            if (cb && cb.checked) setHintDismissed('expertMap');
+            document.getElementById('expert-map-help').style.display = 'none';
+        }
+
         /* ═══ WORD MAP HELP MODAL ════════════════════════════════════════════ */
         function showWordMapHelp() {
+            if (isHintDismissed('wordMap')) {
+                go('s-classroom');
+                return;
+            }
             document.getElementById('word-map-help').style.display = 'flex';
         }
         function dismissWordMapHelp() {
             document.getElementById('word-map-help').style.display = 'none';
         }
         function openWordMap() {
+            const cb = document.getElementById('word-map-never-show');
+            if (cb && cb.checked) setHintDismissed('wordMap');
             dismissWordMapHelp();
             go('s-classroom');
         }
