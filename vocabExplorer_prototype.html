@@ -257,10 +257,20 @@
 
         .nav-item.active {
             color: var(--primary);
+            background: rgba(26, 51, 86, 0.12);
+            border-radius: 8px;
         }
 
         .nav-item.teacher.active {
             color: var(--teacher);
+            background: rgba(30, 77, 43, 0.12);
+            border-radius: 8px;
+        }
+
+        .nav-item.expert.active {
+            color: var(--expert);
+            background: rgba(14, 34, 64, 0.12);
+            border-radius: 8px;
         }
 
         /* ═══ SHARED COMPONENTS ══════════════════════════════════════════════════ */
@@ -2464,6 +2474,7 @@
         <div class="wiz-section">Panels</div>
         <div class="wiz-btns">
             <button class="wiz-btn" onclick="wiz('s-export')">Export Sheet</button>
+            <button class="wiz-btn" onclick="wiz('s-saved')">Saved Words</button>
             <button class="wiz-btn" onclick="wiz('s-settings')">Settings</button>
         </div>
         <div class="wiz-note">Press <b>W</b> to toggle this panel. Use these buttons to drive the prototype during
@@ -2607,11 +2618,14 @@
                     <div class="nav-item" onclick="go('s-search')">
                         <div class="nav-icon">🔍</div>Search
                     </div>
-                    <div class="nav-item">
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
                     </div>
                     <div class="nav-item" onclick="go('s-settings')">
-                        <div class="nav-icon">👤</div>Profile
+                        <div class="nav-icon">⚙️</div>Settings
                     </div>
                 </div>
             </div>
@@ -2699,11 +2713,14 @@
                     <div class="nav-item" onclick="go('s-search')">
                         <div class="nav-icon">🔍</div>Search
                     </div>
-                    <div class="nav-item">
-                        <div class="nav-icon">📋</div>Lessons
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
                     </div>
                     <div class="nav-item" onclick="go('s-settings')">
-                        <div class="nav-icon">⚙</div>Settings
+                        <div class="nav-icon">⚙️</div>Settings
                     </div>
                 </div>
             </div>
@@ -2787,17 +2804,20 @@
                     <div style="height:12px"></div>
                 </div>
                 <div class="bottom-nav">
-                    <div class="nav-item active">
+                    <div class="nav-item active expert">
                         <div class="nav-icon">🏠</div>Home
                     </div>
                     <div class="nav-item" onclick="go('s-search')">
                         <div class="nav-icon">🔍</div>Search
                     </div>
-                    <div class="nav-item" onclick="go('s-flag-gap')">
-                        <div class="nav-icon">📝</div>Annotate
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
                     </div>
                     <div class="nav-item" onclick="go('s-settings')">
-                        <div class="nav-icon">📊</div>Reports
+                        <div class="nav-icon">⚙️</div>Settings
                     </div>
                 </div>
             </div>
@@ -2939,11 +2959,14 @@
                     <div class="nav-item active">
                         <div class="nav-icon">🔍</div>Search
                     </div>
-                    <div class="nav-item">
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
                     </div>
                     <div class="nav-item" onclick="go('s-settings')">
-                        <div class="nav-icon">👤</div>Profile
+                        <div class="nav-icon">⚙️</div>Settings
                     </div>
                 </div>
             </div>
@@ -2952,7 +2975,7 @@
          S-CATEGORIES — Full category list (M3 FIX for Teacher)
     ═════════════════════════════════════════════════════════════ -->
             <div class="screen" id="s-categories">
-                <div class="top-nav teacher">
+                <div class="top-nav" id="cat-top-nav">
                     <span class="back-btn" onclick="back()">←</span>
                     <span class="nav-title">All Categories</span>
                     <div class="nav-actions"><span onclick="go('s-search')">🔍</span></div>
@@ -3029,11 +3052,14 @@
                     <div class="nav-item" onclick="go('s-search')">
                         <div class="nav-icon">🔍</div>Search
                     </div>
-                    <div class="nav-item active teacher">
-                        <div class="nav-icon">📋</div>Categories
+                    <div class="nav-item active">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
                     </div>
                     <div class="nav-item" onclick="go('s-settings')">
-                        <div class="nav-icon">⚙</div>Settings
+                        <div class="nav-icon">⚙️</div>Settings
                     </div>
                 </div>
             </div>
@@ -3069,10 +3095,13 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item active">
-                        <div class="nav-icon">📋</div>Explore
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
                     </div>
                     <div class="nav-item" onclick="go('s-settings')">
-                        <div class="nav-icon">👤</div>Profile
+                        <div class="nav-icon">⚙️</div>Settings
                     </div>
                 </div>
             </div>
@@ -3370,6 +3399,23 @@
                     <button class="exp-btn exp-morph" onclick="go('s-morphology')">🔬 Morphology</button>
                     <button class="exp-btn exp-export" onclick="showExportSuccess()">📤 Export List</button>
                 </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="backToHome()">
+                        <div class="nav-icon">🏠</div>Home
+                    </div>
+                    <div class="nav-item" onclick="go('s-search')">
+                        <div class="nav-icon">🔍</div>Search
+                    </div>
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
+                    </div>
+                    <div class="nav-item" onclick="go('s-settings')">
+                        <div class="nav-icon">⚙️</div>Settings
+                    </div>
+                </div>
             </div>
 
             <!-- ════════════════════════════════════════════════════════════
@@ -3449,6 +3495,23 @@
                     <div class="morph-row"><span class="morph-key">Domain</span><span class="morph-val">Traditional
                             Hunting Practices</span></div>
                 </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="backToHome()">
+                        <div class="nav-icon">🏠</div>Home
+                    </div>
+                    <div class="nav-item" onclick="go('s-search')">
+                        <div class="nav-icon">🔍</div>Search
+                    </div>
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
+                    </div>
+                    <div class="nav-item" onclick="go('s-settings')">
+                        <div class="nav-icon">⚙️</div>Settings
+                    </div>
+                </div>
             </div>
 
             <!-- ════════════════════════════════════════════════════════════
@@ -3456,7 +3519,7 @@
     ═════════════════════════════════════════════════════════════ -->
             <div class="screen" id="s-flag-gap">
                 <div class="top-nav expert">
-                    <span class="back-btn" onclick="back()">←</span>
+                    <span class="back-btn" onclick="leaveAnnotateConfirm('back')">←</span>
                     <span class="nav-title">Annotate Gap</span>
                 </div>
                 <div class="screen-body">
@@ -3513,9 +3576,26 @@
                         <button class="flag-submit" onclick="submitFlag()">📝 Submit Annotation</button>
                         <!-- Save Draft button so experts don't lose work -->
                         <button class="flag-draft" onclick="saveDraft()">💾 Save Draft</button>
-                        <button class="flag-cancel" onclick="back()">Cancel</button>
+                        <button class="flag-cancel" onclick="leaveAnnotateConfirm('back')">Cancel</button>
                     </div>
                     <div style="height:12px"></div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="leaveAnnotateConfirm('home')">
+                        <div class="nav-icon">🏠</div>Home
+                    </div>
+                    <div class="nav-item" onclick="leaveAnnotateConfirm('s-search')">
+                        <div class="nav-icon">🔍</div>Search
+                    </div>
+                    <div class="nav-item" onclick="leaveAnnotateConfirm('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="leaveAnnotateConfirm('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
+                    </div>
+                    <div class="nav-item" onclick="leaveAnnotateConfirm('s-settings')">
+                        <div class="nav-icon">⚙️</div>Settings
+                    </div>
                 </div>
             </div>
 
@@ -3602,6 +3682,53 @@
                         <div class="success-body">Your lesson plan vocabulary list has been exported successfully. You
                             can find it in your selected destination.</div>
                         <button class="success-dismiss" onclick="dismissExportSuccess()">Dismiss</button>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="backToHome()">
+                        <div class="nav-icon">🏠</div>Home
+                    </div>
+                    <div class="nav-item" onclick="go('s-search')">
+                        <div class="nav-icon">🔍</div>Search
+                    </div>
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
+                    </div>
+                    <div class="nav-item" onclick="go('s-settings')">
+                        <div class="nav-icon">⚙️</div>Settings
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════════════════════════
+         S-SAVED — Saved Words List
+    ═════════════════════════════════════════════════════════════ -->
+            <div class="screen" id="s-saved">
+                <div class="top-nav" id="saved-top-nav">
+                    <span class="back-btn" onclick="back()">←</span>
+                    <span class="nav-title">Saved Words</span>
+                </div>
+                <div class="screen-body" id="saved-body">
+                    <!-- Populated by renderSavedWords() -->
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="backToHome()">
+                        <div class="nav-icon">🏠</div>Home
+                    </div>
+                    <div class="nav-item" onclick="go('s-search')">
+                        <div class="nav-icon">🔍</div>Search
+                    </div>
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">⭐</div>Saved
+                    </div>
+                    <div class="nav-item" onclick="go('s-settings')">
+                        <div class="nav-icon">⚙️</div>Settings
                     </div>
                 </div>
             </div>
@@ -3716,6 +3843,23 @@
                     </div>
                     <div style="height:16px"></div>
                 </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="backToHome()">
+                        <div class="nav-icon">🏠</div>Home
+                    </div>
+                    <div class="nav-item" onclick="go('s-search')">
+                        <div class="nav-icon">🔍</div>Search
+                    </div>
+                    <div class="nav-item" onclick="go('s-categories')">
+                        <div class="nav-icon">📂</div>Explore
+                    </div>
+                    <div class="nav-item" onclick="go('s-saved')">
+                        <div class="nav-icon">⭐</div>Saved
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">⚙️</div>Settings
+                    </div>
+                </div>
             </div>
 
         </div><!-- /screen-container -->
@@ -3781,6 +3925,18 @@
         };
 
         /* ═══ NAVIGATION ══════════════════════════════════════════════════════ */
+        function onScreenEnter(id) {
+            if (id === 's-saved') renderSavedWords();
+            if (id === 's-expert-map') setTimeout(() => showExpertMapHintIfNeeded(), 350);
+            // Update top-nav color to match current persona for shared screens
+            const personaClass = state.persona === 'teacher' ? ' teacher' : state.persona === 'expert' ? ' expert' : '';
+            const adaptiveScreens = ['s-categories', 's-semantic-list', 's-saved', 's-settings', 's-search'];
+            if (adaptiveScreens.includes(id)) {
+                const topNav = document.querySelector('#' + id + ' .top-nav');
+                if (topNav) topNav.className = 'top-nav' + personaClass;
+            }
+        }
+
         function go(id) {
             const current = state.stack[state.stack.length - 1];
             if (current === id) return;
@@ -3795,10 +3951,7 @@
 
             state.stack.push(id);
             updateWizardHighlight(id);
-            if (id === 's-expert-map') {
-                // Wait for slide-in animation (~280ms) before showing the hint overlay
-                setTimeout(() => showExpertMapHintIfNeeded(), 350);
-            }
+            onScreenEnter(id);
         }
 
         function back() {
@@ -3822,10 +3975,7 @@
             const el = document.getElementById(id);
             if (el) { el.classList.add('active'); state.stack = [id]; }
             updateWizardHighlight(id);
-            if (id === 's-expert-map') {
-                // wiz() does an instant jump (no animation), so a short delay is enough
-                setTimeout(() => showExpertMapHintIfNeeded(), 150);
-            }
+            onScreenEnter(id);
         }
 
         function backToHome() {
@@ -4341,6 +4491,44 @@
                 if (btn) { btn.textContent = '★ Saved'; btn.style.background = '#e8f4ec'; }
                 showToast('⭐ Word saved!');
             }
+            // Refresh saved list if it is currently visible
+            if (document.getElementById('s-saved') && document.getElementById('s-saved').classList.contains('active')) {
+                renderSavedWords();
+            }
+        }
+
+        function renderSavedWords() {
+            const body = document.getElementById('saved-body');
+            if (!body) return;
+            if (state.savedWords.size === 0) {
+                body.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--light);font-size:13px">⭐ No saved words yet.<br><br>Tap the <strong>Save</strong> button on any word to add it here.</div>';
+                return;
+            }
+            body.innerHTML = '';
+            const hdr = document.createElement('div');
+            hdr.style.cssText = 'padding:8px 14px 4px;font-size:11px;color:var(--mid)';
+            hdr.textContent = state.savedWords.size + ' saved word' + (state.savedWords.size !== 1 ? 's' : '');
+            body.appendChild(hdr);
+            state.savedWords.forEach(wordId => {
+                const d = wordData[wordId] || { cree: wordId, eng: '—', cls: '—', topic: '—' };
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `
+                    <div class="result-main">
+                        <div class="result-cree">${d.cree}</div>
+                        <div class="result-eng">${d.eng.replace(/<[^>]*>/g, '')}</div>
+                        <div class="result-chips">
+                            <span class="chip chip-gray">${d.topic}</span>
+                            <span class="chip chip-white">${d.cls}</span>
+                        </div>
+                    </div>
+                    <span class="result-arrow">›</span>`;
+                item.onclick = () => openWordDetail(wordId);
+                body.appendChild(item);
+            });
+            const spacer = document.createElement('div');
+            spacer.style.height = '16px';
+            body.appendChild(spacer);
         }
 
         function playAudio() {
@@ -4575,6 +4763,12 @@
         }
         function saveDraft() {
             showToast('💾 Draft saved — you can return later');
+        }
+        function leaveAnnotateConfirm(target) {
+            if (!confirm('Changes will not be saved if you leave. Continue?')) return;
+            if (target === 'back') back();
+            else if (target === 'home') backToHome();
+            else go(target);
         }
 
         /* ═══ EXPORT SUCCESS MODAL ═══════════════════════════════════════════ */
