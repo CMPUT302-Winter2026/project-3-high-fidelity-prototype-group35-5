@@ -2631,7 +2631,6 @@
     ═════════════════════════════════════════════════════════════ -->
             <div class="screen" id="s-home-novice">
                 <div class="top-nav">
-                    <span style="font-size:20px;cursor:pointer" onclick="go('s-settings')">☰</span>
                     <span class="nav-title">Vocabulary Explorer</span>
                     <div class="nav-actions">
                         <span onclick="go('s-settings')">⚙</span>
@@ -2713,7 +2712,6 @@
     ═════════════════════════════════════════════════════════════ -->
             <div class="screen" id="s-home-teacher">
                 <div class="top-nav teacher">
-                    <span style="font-size:20px;cursor:pointer" onclick="go('s-settings')">☰</span>
                     <span class="nav-title">Vocabulary Explorer</span>
                     <div class="nav-actions"><button class="export-list-btn" onclick="showExportSuccess()"
                             style="font-size:10px;padding:5px 9px">📤 Export List</button><span
@@ -2735,7 +2733,7 @@
                     <div class="section-hdr"
                         style="display:flex;justify-content:space-between;align-items:center;padding-right:14px">
                         Lesson Plans
-                        <span style="font-size:10px;color:var(--accent);font-weight:700;cursor:pointer">+ New
+                        <span style="font-size:10px;color:var(--accent);font-weight:700;cursor:pointer" onclick="showNewLessonPopup()">+ New
                             Lesson</span>
                     </div>
                     <div class="lesson-card" onclick="loadTopic('movement');go('s-semantic-list')">
@@ -2745,7 +2743,7 @@
                             <div style="font-size:10px;color:var(--mid);margin-top:2px">Grade 10 · 14 words · Draft
                             </div>
                         </div>
-                        <span class="lesson-badge badge-draft">Edit</span>
+                        <span class="lesson-badge badge-draft" onclick="event.stopPropagation();showEditPopup()">Edit</span>
                     </div>
                     <div class="lesson-card">
                         <div style="font-size:22px">🌦️</div>
@@ -2763,7 +2761,7 @@
                             <div style="font-size:10px;color:var(--mid);margin-top:2px">Grade 11 · 19 words · Draft
                             </div>
                         </div>
-                        <span class="lesson-badge badge-draft">Edit</span>
+                        <span class="lesson-badge badge-draft" onclick="showEditPopup()">Edit</span>
                     </div>
                     <div class="section-hdr"
                         style="display:flex;align-items:center;justify-content:space-between;padding-right:14px">
@@ -2808,7 +2806,6 @@
     ═════════════════════════════════════════════════════════════ -->
             <div class="screen" id="s-home-expert">
                 <div class="top-nav expert">
-                    <span style="font-size:20px;cursor:pointer">☰</span>
                     <div style="flex:1">
                         <div style="font-size:9px;opacity:.55;text-transform:uppercase;letter-spacing:.5px">Expert ·
                             ALTLab</div>
@@ -2836,17 +2833,17 @@
                     <div class="section-hdr">Coverage Heatmap by Domain</div>
                     <div class="heatmap-grid">
                         <div class="hm hm-hi" onclick="loadTopic('body');go('s-expert-map')">Body<br>Parts</div>
-                        <div class="hm hm-hi" onclick="loadTopic('family');go('s-semantic-list')">Kinship</div>
-                        <div class="hm hm-mid" onclick="loadTopic('animals');go('s-semantic-list')">Animals</div>
+                        <div class="hm hm-hi" onclick="loadTopic('family');go('s-expert-map')">Kinship</div>
+                        <div class="hm hm-mid" onclick="loadTopic('animals');go('s-expert-map')">Animals</div>
                         <div class="hm hm-mid" onclick="loadTopic('movement');go('s-expert-map')">Movement</div>
-                        <div class="hm hm-mid" onclick="loadTopic('weather');go('s-semantic-list')">Weather</div>
-                        <div class="hm hm-lo" onclick="loadTopic('food');go('s-semantic-list')">Food</div>
+                        <div class="hm hm-mid" onclick="loadTopic('weather');go('s-expert-map')">Weather</div>
+                        <div class="hm hm-lo" onclick="loadTopic('food');go('s-expert-map')">Food</div>
                         <div class="hm hm-lo" onclick="go('s-expert-map')">Hunting</div>
-                        <div class="hm hm-none" onclick="loadTopic('ceremony');go('s-semantic-list')">Ceremony</div>
-                        <div class="hm hm-none" onclick="loadTopic('trade');go('s-semantic-list')">Trade</div>
-                        <div class="hm hm-lo" onclick="loadTopic('plants');go('s-semantic-list')">Plants</div>
-                        <div class="hm hm-mid" onclick="loadTopic('time');go('s-semantic-list')">Time</div>
-                        <div class="hm hm-hi" onclick="loadTopic('direction');go('s-semantic-list')">Direction</div>
+                        <div class="hm hm-none" onclick="loadTopic('ceremony');go('s-expert-map')">Ceremony</div>
+                        <div class="hm hm-none" onclick="loadTopic('trade');go('s-expert-map')">Trade</div>
+                        <div class="hm hm-lo" onclick="loadTopic('plants');go('s-expert-map')">Plants</div>
+                        <div class="hm hm-mid" onclick="loadTopic('time');go('s-expert-map')">Time</div>
+                        <div class="hm hm-hi" onclick="loadTopic('direction');go('s-expert-map')">Direction</div>
                     </div>
                     <div style="display:flex;gap:10px;padding:0 12px 6px">
                         <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--mid)">
@@ -2916,12 +2913,12 @@
                         <span style="font-size:14px;color:var(--light);cursor:pointer" onclick="clearSearch()">✕</span>
                     </div>
                     <div class="filter-scroll">
-                        <span class="f-chip on">All</span>
-                        <span class="f-chip off">Nouns</span>
-                        <span class="f-chip off">Verbs</span>
-                        <span class="f-chip off" onclick="filterAnim">Animate</span>
-                        <span class="f-chip off">Body</span>
-                        <span class="f-chip off">Movement</span>
+                        <span class="f-chip on" onclick="setSearchFilter(this,'all')">All</span>
+                        <span class="f-chip off" onclick="setSearchFilter(this,'noun')">Nouns</span>
+                        <span class="f-chip off" onclick="setSearchFilter(this,'verb')">Verbs</span>
+                        <span class="f-chip off" onclick="setSearchFilter(this,'animate')">Animate</span>
+                        <span class="f-chip off" onclick="setSearchFilter(this,'body')">Body</span>
+                        <span class="f-chip off" onclick="setSearchFilter(this,'movement')">Movement</span>
                     </div>
                     <!-- M3 FIX: Visible multi-select button replaces hidden long-press -->
                     <div class="multi-select-bar">
@@ -2947,7 +2944,7 @@
                             List</button>
                     </div>
                     <div id="search-results">
-                        <div class="result-item" onclick="openWordDetail('pimohtew')">
+                        <div class="result-item" data-type="verb" data-animate="true" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew')">
                             <div id="cb-pimohtew" class="result-cb" style="display:none"></div>
                             <div class="result-main">
                                 <div class="result-cree"><span class="result-highlight">pimohtê</span>w</div>
@@ -2960,7 +2957,7 @@
                             </div>
                             <span class="result-arrow">›</span>
                         </div>
-                        <div class="result-item" onclick="handleResultTap(this,'cb-epimohtew')">
+                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-epimohtew')">
                             <div id="cb-epimohtew" class="result-cb" style="display:none"></div>
                             <div class="result-main">
                                 <div class="result-cree">ê-<span class="result-highlight">pimohtê</span>t</div>
@@ -2972,7 +2969,7 @@
                             </div>
                             <span class="result-arrow">›</span>
                         </div>
-                        <div class="result-item" onclick="handleResultTap(this,'cb-pimohtew2')">
+                        <div class="result-item" data-type="noun" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew2')">
                             <div id="cb-pimohtew2" class="result-cb" style="display:none"></div>
                             <div class="result-main">
                                 <div class="result-cree"><span class="result-highlight">pimohtê</span>win</div>
@@ -2984,7 +2981,7 @@
                             </div>
                             <span class="result-arrow">›</span>
                         </div>
-                        <div class="result-item" onclick="handleResultTap(this,'cb-papamohtew')">
+                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-papamohtew')">
                             <div id="cb-papamohtew" class="result-cb" style="display:none"></div>
                             <div class="result-main">
                                 <div class="result-cree">papâmo<span class="result-highlight">htê</span>w</div>
@@ -2996,7 +2993,8 @@
                             </div>
                             <span class="result-arrow">›</span>
                         </div>
-                        <div class="result-item" onclick="handleResultTap(this,'cb-kiwepimohtew')">
+                        <div id="search-results-overflow" style="display:none">
+                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-kiwepimohtew')">
                             <div id="cb-kiwepimohtew" class="result-cb" style="display:none"></div>
                             <div class="result-main">
                                 <div class="result-cree">kîwê<span class="result-highlight">pimohtê</span>w</div>
@@ -3008,7 +3006,7 @@
                             </div>
                             <span class="result-arrow">›</span>
                         </div>
-                        <div class="result-item" onclick="handleResultTap(this,'cb-mostosiw')">
+                        <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-mostosiw')">
                             <div id="cb-mostosiw" class="result-cb" style="display:none"></div>
                             <div class="result-main">
                                 <div class="result-cree">mostosiw</div>
@@ -3020,9 +3018,11 @@
                             </div>
                             <span class="result-arrow">›</span>
                         </div>
+                        </div>
                     </div>
-                    <div
-                        style="text-align:center;padding:10px;font-size:11px;color:var(--accent);font-weight:600;cursor:pointer">
+                    <div id="show-all-btn"
+                        style="text-align:center;padding:10px;font-size:11px;color:var(--accent);font-weight:600;cursor:pointer"
+                        onclick="showAllSearchResults()">
                         Show all 12 results →</div>
                     <div style="height:80px"></div>
                 </div>
@@ -3503,7 +3503,7 @@
                 <div class="top-nav expert">
                     <span class="back-btn" onclick="back()">←</span>
                     <span class="nav-title" style="font-style:italic">nipahêw</span>
-                    <div class="nav-actions"><span>📋</span><span onclick="go('s-export')">📤</span></div>
+                    <div class="nav-actions"><span title="Copy morphological data" onclick="copyMorphData()" style="cursor:pointer">📋</span><span onclick="go('s-export')">📤</span></div>
                 </div>
                 <div
                     style="padding:10px 14px 8px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0">
@@ -3622,11 +3622,13 @@
                         Related existing words</div>
                     <div style="padding:2px 12px 6px;display:flex;gap:6px;flex-wrap:wrap">
                         <div
-                            style="display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1.5px solid #b0c8e4;border-radius:14px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--primary);cursor:pointer">
+                            style="display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1.5px solid #b0c8e4;border-radius:14px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--primary);cursor:pointer"
+                            onclick="openWordDetail('natinakew')">
                             <span style="font-weight:700">nâtinikêw</span><span
                                 style="font-size:10px;color:var(--mid)">approaches</span></div>
                         <div
-                            style="display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1.5px solid #b0c8e4;border-radius:14px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--primary);cursor:pointer">
+                            style="display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1.5px solid #b0c8e4;border-radius:14px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--primary);cursor:pointer"
+                            onclick="openWordDetail('nipahew')">
                             <span style="font-weight:700">nipahêw</span><span
                                 style="font-size:10px;color:var(--mid)">kills it</span></div>
                     </div>
@@ -3998,6 +4000,28 @@
             </div>
         </div>
 
+        <!-- NEW LESSON POPUP MODAL -->
+        <div class="success-modal-backdrop" id="new-lesson-modal"
+            style="display:none;position:absolute;z-index:600" onclick="dismissNewLessonPopup()">
+            <div class="success-modal" onclick="event.stopPropagation()">
+                <div class="success-check">✓</div>
+                <div class="success-title">Lesson Created!</div>
+                <div class="success-body">A new lesson plan has been created from your saved words. In the full app, you will be able to customize the lesson name, grade level, and word selection before saving.</div>
+                <button class="success-dismiss" onclick="dismissNewLessonPopup()">Dismiss</button>
+            </div>
+        </div>
+
+        <!-- EDIT LESSON POPUP MODAL -->
+        <div class="success-modal-backdrop" id="edit-lesson-modal"
+            style="display:none;position:absolute;z-index:600" onclick="dismissEditPopup()">
+            <div class="success-modal" onclick="event.stopPropagation()">
+                <div class="success-check">✓</div>
+                <div class="success-title">Lesson Updated!</div>
+                <div class="success-body">Your changes to this lesson plan have been saved. In the full app, you will be able to add or remove words, change the grade level, and publish directly to students.</div>
+                <button class="success-dismiss" onclick="dismissEditPopup()">Dismiss</button>
+            </div>
+        </div>
+
     </div><!-- /phone-wrap -->
 
     <script>
@@ -4012,7 +4036,9 @@
             currentTopic: 'body',
             currentWordId: null,
             nodeSelected: null,
-            wordDetailHistory: []
+            wordDetailHistory: [],
+            _hiddenSearchResults: [],
+            _searchQuery: ''
         };
 
         /* ═══ NAVIGATION ══════════════════════════════════════════════════════ */
@@ -4509,6 +4535,8 @@
             miciminew: { cree: 'miciminêw', sro: 'mi-ci-MI-nâyw', pron: 'mi – ci – MI – nâyw', guide: '', eng: '<strong>s/he holds it</strong>', cls: 'Verb Transitive Inanimate (VTI)', topic: 'Body Parts', exCree: 'miciminêw', exEng: 'S/he holds it.', chips: '<span class="chip chip-blue">5 related</span><span class="chip chip-white">VTI</span>' },
             miskisik: { cree: 'miskîsik', sro: 'mis-KÎ-sik', pron: 'mis – KÎ – sik', guide: 'Long î vowel', eng: '<strong>eye</strong>', cls: 'Noun Inanimate (NI)', topic: 'Body Parts', exCree: 'miskîsik ôma', exEng: 'This is an eye.', chips: '<span class="chip chip-blue">4 related</span><span class="chip chip-white">NI</span>' },
             mihtat: { cree: 'mihtât', sro: 'mih-TÂT', pron: 'mih – TÂT', guide: 'Long â vowel', eng: '<strong>foot</strong>', cls: 'Noun Inanimate (NI)', topic: 'Body Parts', exCree: 'mihtât ôma', exEng: 'This is a foot.', chips: '<span class="chip chip-blue">5 related</span><span class="chip chip-white">NI</span>' },
+            nipahew: { cree: 'nipahêw', sro: 'ni-PA-hâyw', pron: 'ni – PA – hâyw', guide: 'Stress 2nd syllable · Long â vowel', eng: '<strong>s/he kills it</strong> (animate object)', cls: 'Verb Transitive Animate (VTA)', topic: 'Traditional Hunting Practices', exCree: 'nipahêw moswa', exEng: 'S/he kills the moose.', chips: '<span class="chip chip-blue">6 related</span><span class="chip chip-white">VTA</span><span class="chip chip-green">Verified ✓</span>' },
+            natinakew: { cree: 'nâtinikêw', sro: 'nâ-TI-ni-kâyw', pron: 'nâ – TI – ni – kâyw', guide: 'Long â vowel · Stress 2nd syllable', eng: '<strong>s/he approaches it</strong>, stalks toward it', cls: 'Verb Animate Intransitive (VAI)', topic: 'Traditional Hunting Practices', exCree: 'nâtinikêw nôtinikewin', exEng: 'S/he approaches the prey.', chips: '<span class="chip chip-blue">4 related</span><span class="chip chip-white">VAI</span>' },
         };
 
         function _renderWordDetailContent(id) {
@@ -4651,6 +4679,10 @@
         function filterSearch(val) {
             const container = document.getElementById('search-results');
             const query = val.trim().toLowerCase();
+            // Reset overflow/show-all for dynamic searches
+            const overflow = document.getElementById('search-results-overflow');
+            if (overflow) overflow.style.display = 'none';
+            const showAllBtn = document.getElementById('show-all-btn');
             if (!query) {
                 renderDefaultSearchResults();
                 return;
@@ -4658,30 +4690,35 @@
             // Collect all words from wordData + topics
             const seen = new Set();
             const matches = [];
-            const addWord = (id, cree, eng, cls, topicTitle) => {
+            const addWord = (id, cree, eng, cls, topicTitle, type) => {
                 if (seen.has(id)) return;
                 seen.add(id);
                 const creeLow = cree.toLowerCase(), engLow = eng.toLowerCase();
                 if (creeLow.includes(query) || engLow.includes(query)) {
-                    matches.push({ id, cree, eng, cls: cls || '—', topic: topicTitle || '—' });
+                    matches.push({ id, cree, eng, cls: cls || '—', topic: topicTitle || '—', type: type || 'word' });
                 }
             };
             for (const [id, d] of Object.entries(wordData)) {
-                addWord(id, d.cree, d.eng.replace(/<[^>]*>/g, ''), d.cls, d.topic);
+                const clsLow = (d.cls || '').toLowerCase();
+                const wtype = clsLow.includes('noun') ? 'noun' : clsLow.includes('verb') ? 'verb' : 'word';
+                addWord(id, d.cree, d.eng.replace(/<[^>]*>/g, ''), d.cls, d.topic, wtype);
             }
             for (const [tid, td] of Object.entries(topics)) {
                 for (const w of td.words) {
-                    addWord(w.id, w.cree, w.eng, null, td.title);
-                    if (w.children) w.children.forEach(c => addWord(c.id, c.cree, c.eng, null, td.title));
+                    addWord(w.id, w.cree, w.eng, null, td.title, 'word');
+                    if (w.children) w.children.forEach(c => addWord(c.id, c.cree, c.eng, null, td.title, 'word'));
                 }
             }
             if (matches.length === 0) {
                 container.innerHTML = `<div style="text-align:center;padding:24px 14px;color:var(--light);font-size:12px">No results for "${val}"</div>`;
+                if (showAllBtn) showAllBtn.style.display = 'none';
                 return;
             }
-            container.innerHTML = matches.slice(0, 12).map(m => {
+            const visible = matches.slice(0, 4);
+            const hidden = matches.slice(4, 12);
+            container.innerHTML = visible.map(m => {
                 const hi = m.cree.replace(new RegExp(val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), s => `<span class="result-highlight">${s}</span>`);
-                return `<div class="result-item" onclick="openWordDetail('${m.id}')">
+                return `<div class="result-item" data-type="${m.type}" data-category="${(m.topic || '').toLowerCase()}" onclick="openWordDetail('${m.id}')">
       <div class="result-main">
         <div class="result-cree">${hi}</div>
         <div class="result-eng">${m.eng.replace(/<[^>]*>/g, '')}</div>
@@ -4692,52 +4729,61 @@
       <span class="result-arrow">›</span>
     </div>`;
             }).join('');
+            if (hidden.length > 0) {
+                // Store hidden results for show-all
+                state._hiddenSearchResults = hidden;
+                state._searchQuery = val;
+                if (showAllBtn) {
+                    showAllBtn.style.display = '';
+                    showAllBtn.textContent = `Show all ${matches.length} results →`;
+                    showAllBtn.onclick = () => showAllDynamicSearchResults();
+                }
+            } else {
+                state._hiddenSearchResults = [];
+                if (showAllBtn) showAllBtn.style.display = 'none';
+            }
         }
 
         function renderDefaultSearchResults() {
             document.getElementById('search-results').innerHTML = `
-    <div class="result-item" onclick="openWordDetail('pimohtew')">
+    <div class="result-item" data-type="verb" data-animate="true" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew')">
+      <div id="cb-pimohtew" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
       <div class="result-main">
         <div class="result-cree"><span class="result-highlight">pimohtê</span>w</div>
         <div class="result-eng">s/he walks, s/he goes along</div>
         <div class="result-chips"><span class="chip chip-blue">Verb (VAI)</span><span class="chip chip-green">Animate</span><span class="chip chip-gray">Movement</span></div>
       </div><span class="result-arrow">›</span>
     </div>
-    <div class="result-item" onclick="openWordDetail('pimohtew')">
+    <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-epimohtew')">
+      <div id="cb-epimohtew" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
       <div class="result-main">
         <div class="result-cree">ê-<span class="result-highlight">pimohtê</span>t</div>
         <div class="result-eng">while s/he is walking</div>
         <div class="result-chips"><span class="chip chip-blue">Verb (VAI-conj)</span><span class="chip chip-gray">Movement</span></div>
       </div><span class="result-arrow">›</span>
     </div>
-    <div class="result-item" onclick="openWordDetail('pimohtew')">
+    <div class="result-item" data-type="noun" data-category="movement" onclick="handleResultTap(this,'cb-pimohtew2')">
+      <div id="cb-pimohtew2" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
       <div class="result-main">
         <div class="result-cree"><span class="result-highlight">pimohtê</span>win</div>
         <div class="result-eng">a walk, the act of walking</div>
         <div class="result-chips"><span class="chip chip-blue">Noun (NI)</span><span class="chip chip-gray">Movement</span></div>
       </div><span class="result-arrow">›</span>
     </div>
-    <div class="result-item" onclick="openWordDetail('pimohtew')">
+    <div class="result-item" data-type="verb" data-category="movement" onclick="handleResultTap(this,'cb-papamohtew')">
+      <div id="cb-papamohtew" class="result-cb" style="display:${state.selectMode ? 'flex' : 'none'}"></div>
       <div class="result-main">
         <div class="result-cree">papâmo<span class="result-highlight">htê</span>w</div>
         <div class="result-eng">s/he walks around</div>
         <div class="result-chips"><span class="chip chip-blue">Verb (VAI)</span><span class="chip chip-gray">Movement</span></div>
       </div><span class="result-arrow">›</span>
-    </div>
-    <div class="result-item" onclick="openWordDetail('pimohtew')">
-      <div class="result-main">
-        <div class="result-cree">kîwê<span class="result-highlight">pimohtê</span>w</div>
-        <div class="result-eng">s/he walks home</div>
-        <div class="result-chips"><span class="chip chip-blue">Verb (VAI)</span><span class="chip chip-gray">Movement</span></div>
-      </div><span class="result-arrow">›</span>
-    </div>
-    <div class="result-item" onclick="openWordDetail('pimohtew')">
-      <div class="result-main">
-        <div class="result-cree">mostosiw</div>
-        <div class="result-eng">s/he runs</div>
-        <div class="result-chips"><span class="chip chip-blue">Verb (VAI)</span><span class="chip chip-gray">Movement</span></div>
-      </div><span class="result-arrow">›</span>
     </div>`;
+            // Reset overflow section
+            const overflow = document.getElementById('search-results-overflow');
+            if (overflow) overflow.style.display = 'none';
+            const showAllBtn = document.getElementById('show-all-btn');
+            if (showAllBtn) showAllBtn.style.display = '';
+            applySearchFilter();
         }
 
         function toggleSelect() {
@@ -5109,6 +5155,114 @@
                 b.onclick = () => setConfidence(i + 1);
             });
         });
+        /* ═══ NEW LESSON POPUP ═══════════════════════════════════════════════ */
+        function showNewLessonPopup() {
+            const modal = document.getElementById('new-lesson-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+        function dismissNewLessonPopup() {
+            const modal = document.getElementById('new-lesson-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        /* ═══ EDIT LESSON POPUP ══════════════════════════════════════════════ */
+        function showEditPopup() {
+            const modal = document.getElementById('edit-lesson-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+        function dismissEditPopup() {
+            const modal = document.getElementById('edit-lesson-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        /* ═══ MORPHOLOGY CLIPBOARD ═══════════════════════════════════════════ */
+        function copyMorphData() {
+            const text = 'nipahêw — s/he kills it (animate object)\nClass: VTA (Verb Transitive Animate)\nStem: nipah-\nAnimacy: Animate object required\nTheme sign: -ê- (3→3 direction)\nALTLab ID: #4821\nSource: itwêwina · Wolfart & Carroll (1981, p.112)';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('📋 Morphological data copied to clipboard!');
+                }).catch(() => {
+                    showToast('📋 Morphological data copied!');
+                });
+            } else {
+                showToast('📋 Morphological data copied!');
+            }
+        }
+
+        /* ═══ SEARCH FILTER CHIPS ════════════════════════════════════════════ */
+        let activeSearchFilter = 'all';
+        function setSearchFilter(el, type) {
+            activeSearchFilter = type;
+            // Update chip visual state
+            document.querySelectorAll('.filter-scroll .f-chip').forEach(c => {
+                c.classList.remove('on');
+                c.classList.add('off');
+            });
+            el.classList.remove('off');
+            el.classList.add('on');
+            // Apply filter to currently visible results
+            applySearchFilter();
+        }
+
+        function applySearchFilter() {
+            const results = document.querySelectorAll('#search-results .result-item');
+            results.forEach(item => {
+                if (activeSearchFilter === 'all') {
+                    item.style.display = '';
+                } else if (activeSearchFilter === 'noun') {
+                    item.style.display = (item.dataset.type === 'noun') ? '' : 'none';
+                } else if (activeSearchFilter === 'verb') {
+                    item.style.display = (item.dataset.type === 'verb') ? '' : 'none';
+                } else if (activeSearchFilter === 'animate') {
+                    item.style.display = (item.dataset.animate === 'true') ? '' : 'none';
+                } else {
+                    // category filter (body, movement, etc.)
+                    item.style.display = (item.dataset.category === activeSearchFilter) ? '' : 'none';
+                }
+            });
+        }
+
+        /* ═══ SHOW ALL SEARCH RESULTS ════════════════════════════════════════ */
+        function showAllSearchResults() {
+            const overflow = document.getElementById('search-results-overflow');
+            const btn = document.getElementById('show-all-btn');
+            if (overflow) overflow.style.display = '';
+            if (btn) btn.style.display = 'none';
+            // Reapply filter to newly visible items
+            applySearchFilter();
+            // Show checkboxes on new items if in select mode
+            if (state.selectMode) {
+                document.querySelectorAll('.result-cb').forEach(cb => cb.style.display = 'flex');
+            }
+        }
+
+        function showAllDynamicSearchResults() {
+            const container = document.getElementById('search-results');
+            const hidden = state._hiddenSearchResults || [];
+            const val = state._searchQuery || '';
+            if (hidden.length === 0) return;
+            hidden.forEach(m => {
+                const hi = m.cree.replace(new RegExp(val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), s => `<span class="result-highlight">${s}</span>`);
+                const div = document.createElement('div');
+                div.className = 'result-item';
+                div.dataset.type = m.type;
+                div.dataset.category = (m.topic || '').toLowerCase();
+                div.innerHTML = `
+      <div class="result-main">
+        <div class="result-cree">${hi}</div>
+        <div class="result-eng">${m.eng.replace(/<[^>]*>/g, '')}</div>
+        <div class="result-chips"><span class="chip chip-gray">${m.topic}</span></div>
+      </div>
+      <span class="result-arrow">›</span>`;
+                div.onclick = () => openWordDetail(m.id);
+                container.appendChild(div);
+            });
+            state._hiddenSearchResults = [];
+            const btn = document.getElementById('show-all-btn');
+            if (btn) btn.style.display = 'none';
+            applySearchFilter();
+        }
+
     </script>
 </body>
 
