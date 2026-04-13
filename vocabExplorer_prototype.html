@@ -175,6 +175,7 @@
 
         .screen.overlay-screen.active {
             transform: translateY(0);
+            z-index: 10;
         }
 
         /* ═══ TOP NAV ═══════════════════════════════════════════════════════════ */
@@ -806,6 +807,79 @@
             align-items: center;
             justify-content: center;
             z-index: 500;
+        }
+
+        /* Leave-annotate confirm dialog */
+        .leave-confirm-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 20, 40, .55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 600;
+        }
+
+        .leave-confirm-modal {
+            background: white;
+            border-radius: 16px;
+            padding: 24px 20px 18px;
+            margin: 0 24px;
+            max-width: 310px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .35);
+        }
+
+        .leave-confirm-icon {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .leave-confirm-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .leave-confirm-body {
+            font-size: 12px;
+            color: var(--mid);
+            line-height: 1.55;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .leave-confirm-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .leave-confirm-stay {
+            flex: 1;
+            background: var(--soft);
+            color: var(--primary);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 11px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .leave-confirm-leave {
+            flex: 1;
+            background: var(--expert);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 11px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
         }
 
         .success-modal {
@@ -2623,7 +2697,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -2718,7 +2792,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -2815,7 +2889,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -2964,7 +3038,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3057,7 +3131,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item active">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3099,7 +3173,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item active">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3411,7 +3485,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3507,7 +3581,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3592,7 +3666,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="leaveAnnotateConfirm('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="leaveAnnotateConfirm('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3696,7 +3770,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3726,7 +3800,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item active">
                         <div class="nav-icon">⭐</div>Saved
@@ -3855,7 +3929,7 @@
                         <div class="nav-icon">🔍</div>Search
                     </div>
                     <div class="nav-item" onclick="go('s-categories')">
-                        <div class="nav-icon">📂</div>Explore
+                        <div class="nav-icon">🗂️</div>Explore
                     </div>
                     <div class="nav-item" onclick="go('s-saved')">
                         <div class="nav-icon">⭐</div>Saved
@@ -3908,6 +3982,19 @@
                 <div class="success-body">Your vocabulary list has been exported successfully as a PDF. You can find it
                     in your selected destination.</div>
                 <button class="success-dismiss" onclick="dismissGlobalExportSuccess()">Dismiss</button>
+            </div>
+        </div>
+
+        <!-- LEAVE ANNOTATE CONFIRM DIALOG -->
+        <div class="leave-confirm-backdrop" id="leave-confirm" onclick="leaveConfirmStay()">
+            <div class="leave-confirm-modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="leave-confirm-title">
+                <div class="leave-confirm-icon">⚠️</div>
+                <div class="leave-confirm-title" id="leave-confirm-title">Leave Annotation?</div>
+                <div class="leave-confirm-body">Changes will not be saved if you leave. Are you sure you want to continue?</div>
+                <div class="leave-confirm-btns">
+                    <button class="leave-confirm-stay" onclick="leaveConfirmStay()">Stay</button>
+                    <button class="leave-confirm-leave" onclick="leaveConfirmProceed()">Leave</button>
+                </div>
             </div>
         </div>
 
@@ -4768,8 +4855,26 @@
         function saveDraft() {
             showToast('💾 Draft saved — you can return later');
         }
+        let leaveAnnotatePendingTarget = null;
+
         function leaveAnnotateConfirm(target) {
-            if (!confirm('Changes will not be saved if you leave. Continue?')) return;
+            leaveAnnotatePendingTarget = target;
+            const dlg = document.getElementById('leave-confirm');
+            dlg.style.display = 'flex';
+        }
+
+        function leaveConfirmStay() {
+            const dlg = document.getElementById('leave-confirm');
+            dlg.style.display = 'none';
+            leaveAnnotatePendingTarget = null;
+        }
+
+        function leaveConfirmProceed() {
+            const dlg = document.getElementById('leave-confirm');
+            dlg.style.display = 'none';
+            const target = leaveAnnotatePendingTarget;
+            leaveAnnotatePendingTarget = null;
+            if (!target) return;
             if (target === 'back') back();
             else if (target === 'home') backToHome();
             else go(target);
@@ -4977,6 +5082,10 @@
                 const active = document.activeElement;
                 if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
                 toggleWizard();
+            }
+            if (e.key === 'Escape') {
+                const dlg = document.getElementById('leave-confirm');
+                if (dlg && dlg.style.display === 'flex') leaveConfirmStay();
             }
         });
 
