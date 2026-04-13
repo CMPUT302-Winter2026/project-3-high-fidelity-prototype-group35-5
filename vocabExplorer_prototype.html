@@ -3088,7 +3088,8 @@
                             <div style="display:flex;justify-content:space-between;align-items:flex-start">
                                 <div style="display:flex;align-items:flex-start;gap:6px">
                                     <span id="wd-back-btn" style="font-size:20px;cursor:pointer;padding:4px;display:none"
-                                        onclick="wordDetailBack()">‹</span>
+                                        onclick="wordDetailBack()" role="button" aria-label="Go back to previous word"
+                                        tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')wordDetailBack()">‹</span>
                                     <div>
                                         <div class="wd-title" id="wd-cree">mihcêt</div>
                                         <div class="wd-sro" id="wd-sro">SRO: mih-CHÂYT</div>
@@ -4269,8 +4270,7 @@
             mihtat: { cree: 'mihtât', sro: 'mih-TÂT', pron: 'mih – TÂT', guide: 'Long â vowel', eng: '<strong>foot</strong>', cls: 'Noun Inanimate (NI)', topic: 'Body Parts', exCree: 'mihtât ôma', exEng: 'This is a foot.', chips: '<span class="chip chip-blue">5 related</span><span class="chip chip-white">NI</span>' },
         };
 
-        function openWordDetail(id) {
-            // Fallback: look up from topics if not in wordData
+        function _renderWordDetailContent(id) {
             let d = wordData[id];
             if (!d) {
                 for (const td of Object.values(topics)) {
@@ -4292,13 +4292,18 @@
             document.getElementById('wd-ex-cree').textContent = d.exCree;
             document.getElementById('wd-ex-eng').textContent = d.exEng;
             document.getElementById('wd-chips').innerHTML = d.chips;
-            // Update save button to reflect current saved state
             const btn = document.getElementById('save-btn');
             if (btn) {
                 const saved = state.savedWords.has(id);
                 btn.textContent = saved ? '★ Saved' : '⭐ Save';
                 btn.style.background = saved ? '#e8f4ec' : '';
             }
+            state.currentWordId = id;
+            const backBtn = document.getElementById('wd-back-btn');
+            if (backBtn) backBtn.style.display = state.wordDetailHistory.length > 0 ? 'inline' : 'none';
+        }
+
+        function openWordDetail(id) {
             const el = document.getElementById('s-word-detail');
             const alreadyOpen = el.classList.contains('active');
             if (alreadyOpen) {
@@ -4309,46 +4314,13 @@
                 state.wordDetailHistory = [];
                 el.classList.add('active');
             }
-            state.currentWordId = id;
-            // Show or hide the back button based on history depth
-            const backBtn = document.getElementById('wd-back-btn');
-            if (backBtn) backBtn.style.display = state.wordDetailHistory.length > 0 ? 'inline' : 'none';
+            _renderWordDetailContent(id);
         }
 
         function wordDetailBack() {
             if (state.wordDetailHistory.length === 0) return;
             const prevId = state.wordDetailHistory.pop();
-            // Re-render the previous word without pushing to history again
-            let d = wordData[prevId];
-            if (!d) {
-                for (const td of Object.values(topics)) {
-                    for (const w of td.words) {
-                        if (w.id === prevId) { d = { cree: w.cree, sro: w.cree, pron: w.cree, guide: '', eng: `<strong>${w.eng}</strong>`, cls: '—', topic: td.title, exCree: '', exEng: '', chips: '' }; break; }
-                        if (w.children) { const c = w.children.find(c => c.id === prevId); if (c) { d = { cree: c.cree, sro: c.cree, pron: c.cree, guide: '', eng: `<strong>${c.eng}</strong>`, cls: '—', topic: td.title, exCree: '', exEng: '', chips: '' }; break; } }
-                    }
-                    if (d) break;
-                }
-            }
-            if (!d) d = { cree: prevId, sro: prevId, pron: prevId, guide: '', eng: '(definition not loaded)', cls: '—', topic: '—', exCree: '', exEng: '', chips: '' };
-            state.currentWordId = prevId;
-            document.getElementById('wd-cree').textContent = d.cree;
-            document.getElementById('wd-sro').textContent = 'SRO: ' + d.sro;
-            document.getElementById('wd-pron').textContent = d.pron;
-            document.getElementById('wd-pron-guide').textContent = d.guide;
-            document.getElementById('wd-eng').innerHTML = d.eng;
-            document.getElementById('wd-class').textContent = d.cls;
-            document.getElementById('wd-topic').textContent = d.topic;
-            document.getElementById('wd-ex-cree').textContent = d.exCree;
-            document.getElementById('wd-ex-eng').textContent = d.exEng;
-            document.getElementById('wd-chips').innerHTML = d.chips;
-            const btn = document.getElementById('save-btn');
-            if (btn) {
-                const saved = state.savedWords.has(prevId);
-                btn.textContent = saved ? '★ Saved' : '⭐ Save';
-                btn.style.background = saved ? '#e8f4ec' : '';
-            }
-            const backBtn = document.getElementById('wd-back-btn');
-            if (backBtn) backBtn.style.display = state.wordDetailHistory.length > 0 ? 'inline' : 'none';
+            _renderWordDetailContent(prevId);
         }
 
         function closeWordDetail() {
