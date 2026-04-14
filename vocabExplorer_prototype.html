@@ -668,7 +668,7 @@
 
         /* ═══ SCREEN: HOME TEACHER ═══════════════════════════════════════════════ */
         .teacher-banner {
-            background: var(--teacher);
+            background: linear-gradient(135deg, var(--teacher), var(--green));
             padding: 12px 14px;
             color: white;
             display: flex;
@@ -2632,9 +2632,6 @@
             <div class="screen" id="s-home-novice">
                 <div class="top-nav">
                     <span class="nav-title">Vocabulary Explorer</span>
-                    <div class="nav-actions">
-                        <span onclick="go('s-settings')">⚙</span>
-                    </div>
                 </div>
                 <div class="screen-body">
                     <div class="welcome-banner">
@@ -2714,8 +2711,7 @@
                 <div class="top-nav teacher">
                     <span class="nav-title">Vocabulary Explorer</span>
                     <div class="nav-actions"><button class="export-list-btn" onclick="showExportSuccess()"
-                            style="font-size:10px;padding:5px 9px">📤 Export List</button><span
-                            onclick="go('s-settings')">⚙</span></div>
+                            style="font-size:10px;padding:5px 9px">📤 Export List</button></div>
                 </div>
                 <div class="screen-body">
                     <div class="teacher-banner">
@@ -2806,16 +2802,18 @@
     ═════════════════════════════════════════════════════════════ -->
             <div class="screen" id="s-home-expert">
                 <div class="top-nav expert">
-                    <div style="flex:1">
-                        <div style="font-size:9px;opacity:.55;text-transform:uppercase;letter-spacing:.5px">Expert ·
-                            ALTLab</div>
-                        <div style="font-size:14px;font-weight:700;margin-top:1px">Dr. Maya Linguist</div>
+                    <span class="nav-title">Vocabulary Explorer</span>
+                    <div class="nav-actions">
+                        <span
+                            style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:5px 9px;font-size:10px;cursor:pointer"
+                            onclick="go('s-export')">Export 📤</span>
                     </div>
-                    <span
-                        style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:5px 9px;font-size:10px;cursor:pointer"
-                        onclick="go('s-export')">Export 📤</span>
                 </div>
                 <div class="screen-body">
+                    <div style="background:linear-gradient(135deg,var(--expert),var(--primary));padding:12px 14px;color:white">
+                        <div style="font-size:9px;opacity:.55;text-transform:uppercase;letter-spacing:.5px">Expert · ALTLab</div>
+                        <div style="font-size:16px;font-weight:700;margin-top:1px">Dr. Maya Linguist 🔬</div>
+                    </div>
                     <div class="stat-row">
                         <div class="stat-box">
                             <div class="stat-num">4,821</div>
