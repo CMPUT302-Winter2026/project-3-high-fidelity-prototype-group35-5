@@ -8,4 +8,4 @@
 - Sean Meyers (`smmeyers`)
 
 ## Acknowledgements
-- Assisted by Gemini and Claude AI (In development of the prototype)
+- Assisted by Github Copilot (auto mode), Gemini and Claude AI (In development of the prototype)
