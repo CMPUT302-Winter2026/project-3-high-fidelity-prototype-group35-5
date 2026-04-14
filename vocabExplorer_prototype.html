@@ -3788,13 +3788,13 @@
                     <div
                         style="background:#f8f6f0;padding:8px 14px 3px;font-size:11px;font-weight:700;color:var(--mid);letter-spacing:.7px;text-transform:uppercase">
                         Display Mode</div>
-                    <div class="settings-row highlighted" id="expert-mode-row">
+                    <div class="settings-row" id="expert-mode-row">
                         <div class="s-icon">🔬</div>
                         <div class="s-text">
-                            <div class="s-label" style="color:var(--gap)">Expert / Linguist Mode</div>
+                            <div class="s-label">Expert / Linguist Mode</div>
                             <div class="s-desc">Morphology panels, gap indicators, coverage heatmap.</div>
                         </div>
-                        <div class="toggle-wrap" id="toggle-expert" onclick="switchToPersona('expert')">
+                        <div class="toggle-wrap off" id="toggle-expert" onclick="switchToPersona('expert')">
                             <div class="toggle-thumb"></div>
                         </div>
                     </div>
@@ -4084,9 +4084,11 @@
             } else if (p === 'teacher') {
                 toggleTea.classList.replace('off', 'on');
                 toggleExp.classList.replace('on', 'off');
+                expertRow.classList.remove('highlighted');
             } else {
                 toggleExp.classList.replace('on', 'off');
                 toggleTea.classList.replace('on', 'off');
+                expertRow.classList.remove('highlighted');
             }
         }
 
@@ -5009,10 +5011,11 @@
         }
 
         function switchToPersona(persona) {
-            setPersona(persona);
+            const newPersona = state.persona === persona ? 'novice' : persona;
+            setPersona(newPersona);
             const homeMap = { expert: 's-home-expert', teacher: 's-home-teacher', novice: 's-home-novice' };
-            go(homeMap[persona] || 's-home-novice');
-            showToast('Switched to ' + (persona === 'expert' ? 'Expert' : persona === 'teacher' ? 'Teacher' : 'Novice') + ' mode');
+            go(homeMap[newPersona] || 's-home-novice');
+            showToast('Switched to ' + (newPersona === 'expert' ? 'Expert' : newPersona === 'teacher' ? 'Teacher' : 'Novice') + ' mode');
         }
 
         /* ═══ CONFIDENCE BARS ════════════════════════════════════════════════ */
