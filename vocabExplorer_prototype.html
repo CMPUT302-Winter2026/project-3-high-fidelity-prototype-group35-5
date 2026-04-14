@@ -798,6 +798,29 @@
             opacity: .9;
         }
 
+        /* Export button for dark nav bars — ghost/frosted style for contrast */
+        .export-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .3);
+            color: white;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: opacity .15s, transform .1s;
+            white-space: nowrap;
+        }
+
+        .export-nav-btn:active {
+            transform: translateY(1px);
+            opacity: .8;
+        }
+
         /* Success modal overlay */
         .success-modal-backdrop {
             position: absolute;
@@ -2710,8 +2733,8 @@
             <div class="screen" id="s-home-teacher">
                 <div class="top-nav teacher">
                     <span class="nav-title">Vocabulary Explorer</span>
-                    <div class="nav-actions"><button class="export-list-btn" onclick="showExportSuccess()"
-                            style="font-size:10px;padding:5px 9px">📤 Export List</button></div>
+                    <div class="nav-actions"><button class="export-nav-btn" onclick="go('s-export')"
+                            style="font-size:10px;padding:5px 9px">📤 Export</button></div>
                 </div>
                 <div class="screen-body">
                     <div class="teacher-banner">
@@ -2741,7 +2764,7 @@
                         </div>
                         <span class="lesson-badge badge-draft" onclick="event.stopPropagation();showEditPopup()">Edit</span>
                     </div>
-                    <div class="lesson-card">
+                    <div class="lesson-card" onclick="loadTopic('weather');go('s-semantic-list')">
                         <div style="font-size:22px">🌦️</div>
                         <div style="flex:1">
                             <div style="font-size:12px;font-weight:700">Weather &amp; Seasons</div>
@@ -2750,14 +2773,14 @@
                         </div>
                         <span class="lesson-badge badge-done">✓ Done</span>
                     </div>
-                    <div class="lesson-card">
+                    <div class="lesson-card" onclick="loadTopic('family');go('s-semantic-list')">
                         <div style="font-size:22px">👨‍👩‍👧</div>
                         <div style="flex:1">
                             <div style="font-size:12px;font-weight:700">Kinship Terms</div>
                             <div style="font-size:10px;color:var(--mid);margin-top:2px">Grade 11 · 19 words · Draft
                             </div>
                         </div>
-                        <span class="lesson-badge badge-draft" onclick="showEditPopup()">Edit</span>
+                        <span class="lesson-badge badge-draft" onclick="event.stopPropagation();showEditPopup()">Edit</span>
                     </div>
                     <div class="section-hdr"
                         style="display:flex;align-items:center;justify-content:space-between;padding-right:14px">
@@ -3078,8 +3101,8 @@
                     <span class="back-btn" onclick="back()">←</span>
                     <span class="nav-title" id="sem-title">Body Parts</span>
                     <div class="nav-actions">
-                        <button class="export-list-btn" onclick="showExportSuccess()"
-                            style="font-size:10px;padding:5px 9px">📤 Export List</button>
+                        <button class="export-nav-btn" onclick="go('s-export')"
+                            style="font-size:10px;padding:5px 9px">📤 Export</button>
                     </div>
                 </div>
                 <!-- M3 FIX: Clear labeled filter chips instead of ambiguous controls -->
@@ -3296,7 +3319,7 @@
                 <div class="top-nav expert">
                     <span class="back-btn" onclick="back()">←</span>
                     <span class="nav-title">Expert · Traditional Hunting</span>
-                    <div class="nav-actions"><span onclick="go('s-export')">📤</span></div>
+                    <div class="nav-actions"></div>
                 </div>
                 <!-- M3 FIX: Clear checkbox-style filter controls -->
                 <div class="rel-filter-bar">
@@ -3403,7 +3426,7 @@
                 <div class="expert-actions">
                     <button class="exp-btn exp-flag" onclick="go('s-flag-gap')">📝 Annotate Gap</button>
                     <button class="exp-btn exp-morph" onclick="go('s-morphology')">🔬 Morphology</button>
-                    <button class="exp-btn exp-export" onclick="showExportSuccess()">📤 Export List</button>
+                    <button class="exp-btn exp-export" onclick="go('s-export')">📤 Export List</button>
                 </div>
                 <div class="bottom-nav">
                     <div class="nav-item" onclick="backToHome()">
@@ -4396,10 +4419,10 @@
             const body = document.getElementById('sem-body');
             body.innerHTML = '';
 
-            // Topic header with export button
+            // Topic header (word count)
             const hdr = document.createElement('div');
             hdr.style.cssText = 'padding:8px 14px 4px;font-size:11px;color:var(--mid);display:flex;align-items:center;gap:6px';
-            hdr.innerHTML = `<span>📋 ${topic.count}</span><button onclick="showExportSuccess()" style="margin-left:auto;background:var(--primary);color:white;border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:4px">📤 Export List</button>`;
+            hdr.innerHTML = `<span>📋 ${topic.count}</span>`;
             body.appendChild(hdr);
 
             topic.words.forEach(word => {
@@ -4909,6 +4932,11 @@
         }
 
         function activateSelectAndShowExportHint() {
+            // If already in selection mode with words selected, go directly to export
+            if (state.selectMode && state.selectedWords.size > 0) {
+                go('s-export');
+                return;
+            }
             // Enable multi-select mode so evaluator sees checkboxes
             if (!state.selectMode) toggleSelect();
             // Pre-check two words to make the flow feel populated
